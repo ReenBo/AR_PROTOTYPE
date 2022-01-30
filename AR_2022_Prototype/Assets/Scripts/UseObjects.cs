@@ -25,7 +25,7 @@ namespace AR_PROTO
 
         private Action<bool> _beingDestroyedEvent;
 
-        public Action<bool> BeingDestroyedEvent { get => _beingDestroyedEvent; set => _beingDestroyedEvent = value; }
+        public Action<bool> BeingDestroyedEvent { get => _beingDestroyedEvent; }
 
         protected void Awake()
         {
