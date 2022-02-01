@@ -20,7 +20,6 @@ namespace AR_PROTO
         [SerializeField] private Button _createButton;
         [SerializeField] private Button _cleareButton;
 
-        private List<GameObject> _listClonePoints = new List<GameObject>();
         private GameObject _lineClone;
 
         private Action<bool> _beingDestroyedEvent;
@@ -30,6 +29,7 @@ namespace AR_PROTO
         protected void Awake()
         {
             _camera = Camera.main;
+
             _useButton.onClick.AddListener(UseLine);
             _createButton.onClick.AddListener(CreatePoints);
             _createButton.onClick.AddListener(CleareButton);
@@ -38,12 +38,6 @@ namespace AR_PROTO
         protected void Update()
         {
 
-        }
-
-        private void UseLine()
-        {
-            _lineClone = Instantiate(_linePrefab);
-            Debug.Log(_lineClone.gameObject.name);
         }
 
         private void CreatePoints()
@@ -57,9 +51,21 @@ namespace AR_PROTO
             }
         }
 
+        private void UseLine()
+        {
+            _lineClone = Instantiate(_linePrefab);
+        }
+
         private void CleareButton()
         {
             _beingDestroyedEvent.Invoke(true);
+        }
+
+        private void OnDisable()
+        {
+            _useButton.onClick.RemoveListener(UseLine);
+            _createButton.onClick.RemoveListener(CreatePoints);
+            _createButton.onClick.RemoveListener(CleareButton);
         }
     }
 }

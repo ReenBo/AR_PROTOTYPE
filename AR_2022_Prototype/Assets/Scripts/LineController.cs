@@ -8,37 +8,32 @@ using UnityEngine.UI;
 using System;
 using Random = UnityEngine.Random;
 
-
 namespace AR_PROTO
 {
     public class LineController : MonoBehaviour
     {
         [SerializeField] private GameObject _nodePrefab;
 
-        private Camera _camera;
-
         private LineRenderer _line;
-        private Transform _node_start;
-        private Transform _node_end;
+        private Transform _nodeStart;
+        private Transform _nodeEnd;
 
         protected void Awake()
         {
-            _camera = Camera.main;
-
             _line = gameObject.GetComponent<LineRenderer>();
             _line.positionCount = 2;
 
-            _node_start = GetNodePositionByIndex(_nodePrefab, 0);
-            _node_end = GetNodePositionByIndex(_nodePrefab, 1);
+            _nodeStart = GetNodePositionByIndex(_nodePrefab, 0);
+            _nodeEnd = GetNodePositionByIndex(_nodePrefab, 1);
 
-            _node_start.gameObject.AddComponent<Node>();
-            _node_end.gameObject.AddComponent<Node>();
+            _nodeStart.gameObject.AddComponent<Node>();
+            _nodeEnd.gameObject.AddComponent<Node>();
         }
 
-        protected void FixedUpdate()
+        protected void Update()
         {
-            _line.SetPosition(0, _node_start.position);
-            _line.SetPosition(1, _node_end.position);
+            _line.SetPosition(0, _nodeStart.position);
+            _line.SetPosition(1, _nodeEnd.position);
         }
 
         private Transform GetNodePositionByIndex(GameObject gameObject, int index)
@@ -54,25 +49,6 @@ namespace AR_PROTO
         //    if (_isMoved)
         //    {
         //        MoveObjects();
-        //    }
-        //}
-
-        //private void OnTriggerEnter(Collider other)
-        //{
-        //    if (other != null)
-        //    {
-        //        if (other.CompareTag(_sphereTag))
-        //        {
-        //            _isMoved = false;
-
-        //            transform.position = other.transform.position;
-        //            transform.SetParent(other.transform);
-
-        //            other.GetComponent<Collider>().enabled = false;
-
-        //            _rigidbody.Sleep();
-        //            _collider.enabled = false;
-        //        }
         //    }
         //}
 
