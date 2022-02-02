@@ -15,33 +15,6 @@ public class @InputController : IInputActionCollection, IDisposable
     ""name"": ""MouseInputControl"",
     ""maps"": [
         {
-            ""name"": ""Mouse"",
-            ""id"": ""654554c9-0a60-45b8-b7ce-1830f70f8c20"",
-            ""actions"": [
-                {
-                    ""name"": ""MouseInput"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""62fae57e-0488-4d38-aa1d-970e43ca3195"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""52bdb16b-e1cd-482c-afb5-459bb66a4d4e"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseInput"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""Touch"",
             ""id"": ""4d388e8f-92c5-4c13-905d-e1d66382de44"",
             ""actions"": [
@@ -107,11 +80,31 @@ public class @InputController : IInputActionCollection, IDisposable
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""New control scheme"",
+            ""bindingGroup"": ""New control scheme"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Touchscreen>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""New control scheme1"",
+            ""bindingGroup"": ""New control scheme1"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
-        // Mouse
-        m_Mouse = asset.FindActionMap("Mouse", throwIfNotFound: true);
-        m_Mouse_MouseInput = m_Mouse.FindAction("MouseInput", throwIfNotFound: true);
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_TouchInput = m_Touch.FindAction("TouchInput", throwIfNotFound: true);
@@ -163,39 +156,6 @@ public class @InputController : IInputActionCollection, IDisposable
         asset.Disable();
     }
 
-    // Mouse
-    private readonly InputActionMap m_Mouse;
-    private IMouseActions m_MouseActionsCallbackInterface;
-    private readonly InputAction m_Mouse_MouseInput;
-    public struct MouseActions
-    {
-        private @InputController m_Wrapper;
-        public MouseActions(@InputController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseInput => m_Wrapper.m_Mouse_MouseInput;
-        public InputActionMap Get() { return m_Wrapper.m_Mouse; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MouseActions set) { return set.Get(); }
-        public void SetCallbacks(IMouseActions instance)
-        {
-            if (m_Wrapper.m_MouseActionsCallbackInterface != null)
-            {
-                @MouseInput.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouseInput;
-                @MouseInput.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouseInput;
-                @MouseInput.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnMouseInput;
-            }
-            m_Wrapper.m_MouseActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @MouseInput.started += instance.OnMouseInput;
-                @MouseInput.performed += instance.OnMouseInput;
-                @MouseInput.canceled += instance.OnMouseInput;
-            }
-        }
-    }
-    public MouseActions @Mouse => new MouseActions(this);
-
     // Touch
     private readonly InputActionMap m_Touch;
     private ITouchActions m_TouchActionsCallbackInterface;
@@ -244,9 +204,23 @@ public class @InputController : IInputActionCollection, IDisposable
         }
     }
     public TouchActions @Touch => new TouchActions(this);
-    public interface IMouseActions
+    private int m_NewcontrolschemeSchemeIndex = -1;
+    public InputControlScheme NewcontrolschemeScheme
     {
-        void OnMouseInput(InputAction.CallbackContext context);
+        get
+        {
+            if (m_NewcontrolschemeSchemeIndex == -1) m_NewcontrolschemeSchemeIndex = asset.FindControlSchemeIndex("New control scheme");
+            return asset.controlSchemes[m_NewcontrolschemeSchemeIndex];
+        }
+    }
+    private int m_Newcontrolscheme1SchemeIndex = -1;
+    public InputControlScheme Newcontrolscheme1Scheme
+    {
+        get
+        {
+            if (m_Newcontrolscheme1SchemeIndex == -1) m_Newcontrolscheme1SchemeIndex = asset.FindControlSchemeIndex("New control scheme1");
+            return asset.controlSchemes[m_Newcontrolscheme1SchemeIndex];
+        }
     }
     public interface ITouchActions
     {

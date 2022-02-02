@@ -8,7 +8,8 @@ namespace AR_PROTO
 {
     public class Node : MonoBehaviour, INode
     {
-        INode node;
+        private INode _iNode;
+        private int _idNode;
 
         private ARRaycastManager _raycastManager;
         private SphereCollider _collider;
@@ -16,6 +17,8 @@ namespace AR_PROTO
         private Camera _camera;
 
         private bool _isMoved = true;
+
+        public int IDNode { get => _idNode; set => _idNode = value; }
 
         protected void Awake()
         {
@@ -25,19 +28,24 @@ namespace AR_PROTO
             _camera = Camera.main;
         }
 
+        public void Init(ENode id)
+        {
+            IDNode = (int)id;
+        }
+
         protected void Update()
         {
             if (_isMoved)
             {
-                MoveObjects();
+                //MoveObjects();
             }
         }
 
         private void OnTriggerEnter(Collider collider)
         {
-            node = collider.GetComponent<INode>();
+            _iNode = collider.GetComponent<INode>();
 
-            if (node != null)
+            if (_iNode != null)
             {
                 PutObjectToSleep(collider);
             }
@@ -53,22 +61,37 @@ namespace AR_PROTO
             _collider.enabled = false;
         }
 
-        private void MoveObjects()
+        private void TestingMouse()
         {
-            if (Input.touchCount > 0)
+            if (Input.GetMouseButton(0))
             {
-                var touch = Input.GetTouch(0);
+                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
-                if (touch.phase == TouchPhase.Moved)
+                if (Physics.Raycast(ray, out var hit))
                 {
-                    Ray ray = _camera.ViewportPointToRay(touch.position);
+                    Debug.Log(hit.transform.name);
 
-                    if (Physics.Raycast(ray, out RaycastHit hit))
-                    {
-                        transform.position = hit.point;
-                    }
+                    Debug.DrawRay(ray.direction, hit.point, Color.red, 2f);
                 }
             }
         }
+
+        //private void MoveObjects()
+        //{
+        //    if (Input.touchCount > 0)
+        //    {
+        //        var touch = Input.GetTouch(0);
+
+        //        if (touch.phase == TouchPhase.Moved)
+        //        {
+        //            Ray ray = _camera.ViewportPointToRay(touch.position);
+
+        //            if (Physics.Raycast(ray, out RaycastHit hit))
+        //            {
+        //                transform.position = hit.point;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

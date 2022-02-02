@@ -2,33 +2,6 @@
     "name": "MouseInputControl",
     "maps": [
         {
-            "name": "Mouse",
-            "id": "654554c9-0a60-45b8-b7ce-1830f70f8c20",
-            "actions": [
-                {
-                    "name": "MouseInput",
-                    "type": "PassThrough",
-                    "id": "62fae57e-0488-4d38-aa1d-970e43ca3195",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "52bdb16b-e1cd-482c-afb5-459bb66a4d4e",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseInput",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "Touch",
             "id": "4d388e8f-92c5-4c13-905d-e1d66382de44",
             "actions": [
@@ -94,5 +67,28 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "New control scheme",
+            "bindingGroup": "New control scheme",
+            "devices": [
+                {
+                    "devicePath": "<Touchscreen>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "New control scheme1",
+            "bindingGroup": "New control scheme1",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

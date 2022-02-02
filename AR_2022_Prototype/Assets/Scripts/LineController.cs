@@ -26,8 +26,8 @@ namespace AR_PROTO
             _nodeStart = GetNodePositionByIndex(_nodePrefab, 0);
             _nodeEnd = GetNodePositionByIndex(_nodePrefab, 1);
 
-            _nodeStart.gameObject.AddComponent<Node>();
-            _nodeEnd.gameObject.AddComponent<Node>();
+            _nodeStart.gameObject.AddComponent<Node>().Init(ENode.nodeS);
+            _nodeEnd.gameObject.AddComponent<Node>().Init(ENode.nodeE);
         }
 
         protected void Update()
