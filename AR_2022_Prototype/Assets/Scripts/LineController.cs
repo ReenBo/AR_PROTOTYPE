@@ -38,7 +38,7 @@ namespace AR_PROTO
 
         private Transform GetNodePositionByIndex(GameObject gameObject, int index)
         {
-            var vector = new Vector3(index, 0f, 0f);
+            var vector = new Vector3(index, 0f, 2f);
 
             var node = Instantiate(gameObject, vector, Quaternion.identity);
             return node.transform;

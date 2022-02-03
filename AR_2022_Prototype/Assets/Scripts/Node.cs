@@ -8,24 +8,28 @@ namespace AR_PROTO
 {
     public class Node : MonoBehaviour, INode
     {
-        private INode _iNode;
         private int _idNode;
 
-        private ARRaycastManager _raycastManager;
         private SphereCollider _collider;
         private Rigidbody _rigidbody;
+        private Renderer _renderer;
         private Camera _camera;
+
+        private Transform _nodeTarget;
 
         private bool _isMoved = true;
 
         public int IDNode { get => _idNode; set => _idNode = value; }
+        public bool IsMoved { get => _isMoved; }
+        public Transform NodeTarget { get => _nodeTarget; }
 
         protected void Awake()
         {
-            _raycastManager = GetComponent<ARRaycastManager>();
             _collider = GetComponent<SphereCollider>();
             _rigidbody = GetComponent<Rigidbody>();
+            _renderer = GetComponent<Renderer>();
             _camera = Camera.main;
+            _nodeTarget = GetComponent<Transform>();
         }
 
         public void Init(ENode id)
@@ -33,19 +37,11 @@ namespace AR_PROTO
             IDNode = (int)id;
         }
 
-        protected void Update()
+        protected void OnTriggerEnter(Collider collider)
         {
-            if (_isMoved)
-            {
-                //MoveObjects();
-            }
-        }
+            var iNode = collider.GetComponent<INode>();
 
-        private void OnTriggerEnter(Collider collider)
-        {
-            _iNode = collider.GetComponent<INode>();
-
-            if (_iNode != null)
+            if (iNode != null)
             {
                 PutObjectToSleep(collider);
             }
@@ -61,37 +57,21 @@ namespace AR_PROTO
             _collider.enabled = false;
         }
 
-        private void TestingMouse()
+        public void ChangeColor(bool isSelected)
         {
-            if (Input.GetMouseButton(0))
-            {
-                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+            Color? thisColor = isSelected ? Color.red : default;
 
-                if (Physics.Raycast(ray, out var hit))
-                {
-                    Debug.Log(hit.transform.name);
-
-                    Debug.DrawRay(ray.direction, hit.point, Color.red, 2f);
-                }
-            }
+            _renderer.material.color = (Color)thisColor;
         }
 
-        //private void MoveObjects()
+        //protected void OnMouseEnter()
         //{
-        //    if (Input.touchCount > 0)
-        //    {
-        //        var touch = Input.GetTouch(0);
+        //    _renderer.material.color = Color.red; 
+        //}
 
-        //        if (touch.phase == TouchPhase.Moved)
-        //        {
-        //            Ray ray = _camera.ViewportPointToRay(touch.position);
-
-        //            if (Physics.Raycast(ray, out RaycastHit hit))
-        //            {
-        //                transform.position = hit.point;
-        //            }
-        //        }
-        //    }
+        //protected void OnMouseExit()
+        //{
+        //    _renderer.material.color = default;
         //}
     }
 }

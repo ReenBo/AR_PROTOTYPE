@@ -14,6 +14,7 @@ namespace AR_PROTO
 {
     public class UseObjects : MonoBehaviour
     {
+        [SerializeField] private ARRaycastManager _raycastManager;
         [SerializeField] private List<GameObject> _listPoints;
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _linePrefab;
@@ -22,6 +23,10 @@ namespace AR_PROTO
         [SerializeField] private Button _cleareButton;
 
         private GameObject _lineClone;
+
+        private List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
+        private bool _isSelected = false;
 
         private Action<bool> _beingDestroyedEvent;
 
@@ -41,22 +46,22 @@ namespace AR_PROTO
 
         protected void Update()
         {
-            TestingMouse();
+            //TestingMouse();
+            MoveObjects();
+            SelectAnObject();
         }
 
         private void TestingMouse()
         {
             if (Input.GetMouseButton(0))
             {
-                var mousePos = _camera.ScreenToWorldPoint(Input.mousePosition);
-                Debug.Log(mousePos);
                 Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
                 if (Physics.Raycast(ray, out var hit))
                 {
-                    Debug.Log(hit.transform.name);
-                    //hit.transform.position = new Vector3(mousePos.x, mousePos.y, 0f);
+                    var node = hit.transform.GetComponent<INode>();
 
+                    Debug.Log(hit.transform.name);
                     Debug.DrawRay(ray.direction, hit.point, Color.red, 2f);
 
                     Vector2 pos = Input.mousePosition;
@@ -64,11 +69,64 @@ namespace AR_PROTO
                     pos.y = (pos.y - height) / height;
                     var position = new Vector3(pos.x, pos.y, 1f);
 
-                    if (hit.transform.GetComponent<Node>())
+                    Debug.Log(position);
+
+                    //if (node != null && node.IsMoved)
+                    //{
+                    //    node.NodeTarget.position = position;
+                    //}
+                }
+            }
+        }
+
+        private void SelectAnObject()
+        {
+            if (Input.touchCount > 0)
+            {
+                var touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Ray ray = _camera.ViewportPointToRay(touch.position);
+
+                    if (Physics.Raycast(ray, out var hit))
                     {
-                        hit.transform.position = position * hit.point.z;
+                        var node = hit.transform.GetComponent<INode>();
+
+                        if (node != null && !_isSelected)
+                        {
+                            _isSelected = true;
+
+                            node.ChangeColor(true);
+                        }
+                        else
+                        {
+                            _isSelected = false;
+                        }
+
+                        Debug.Log(hit.transform.name);
+                        Debug.DrawRay(ray.direction, hit.point, Color.red, 2f);
                     }
                 }
+            }
+        }
+
+        private void MoveObjects()
+        {
+            if (Input.touchCount > 0)
+            {
+                var touch = Input.GetTouch(0);
+
+                Ray ray = _camera.ViewportPointToRay(touch.position);
+
+                _raycastManager.Raycast(ray, hits, TrackableType.Planes);
+
+                if (touch.phase == TouchPhase.Moved && _isSelected)
+                {
+
+                }
+
+                hits.Clear();
             }
         }
 
