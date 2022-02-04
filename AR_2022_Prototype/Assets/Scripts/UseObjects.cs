@@ -14,6 +14,8 @@ namespace AR_PROTO
 {
     public class UseObjects : MonoBehaviour
     {
+        private INode _iNode;
+
         [SerializeField] private ARRaycastManager _raycastManager;
         [SerializeField] private List<GameObject> _listPoints;
         [SerializeField] private Camera _camera;
@@ -87,17 +89,17 @@ namespace AR_PROTO
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    Ray ray = _camera.ViewportPointToRay(touch.position);
+                    Ray ray = _camera.ScreenPointToRay(touch.position);
 
                     if (Physics.Raycast(ray, out var hit))
                     {
-                        var node = hit.transform.GetComponent<INode>();
+                        _iNode = hit.transform.GetComponent<INode>();
 
-                        if (node != null && !_isSelected)
+                        if (_iNode != null && !_isSelected)
                         {
                             _isSelected = true;
 
-                            node.ChangeColor(true);
+                            _iNode.ChangeColor(true);
                         }
                         else
                         {
@@ -117,13 +119,14 @@ namespace AR_PROTO
             {
                 var touch = Input.GetTouch(0);
 
-                Ray ray = _camera.ViewportPointToRay(touch.position);
+                Ray ray = _camera.ScreenPointToRay(touch.position);
 
                 _raycastManager.Raycast(ray, hits, TrackableType.Planes);
 
                 if (touch.phase == TouchPhase.Moved && _isSelected)
                 {
-
+                    Debug.Log("Move");
+                    _iNode.NodeTransform.position = hits[0].pose.position;
                 }
 
                 hits.Clear();

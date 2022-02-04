@@ -13,23 +13,21 @@ namespace AR_PROTO
         private SphereCollider _collider;
         private Rigidbody _rigidbody;
         private Renderer _renderer;
-        private Camera _camera;
 
-        private Transform _nodeTarget;
+        private Transform _nodeTransform;
 
         private bool _isMoved = true;
 
         public int IDNode { get => _idNode; set => _idNode = value; }
         public bool IsMoved { get => _isMoved; }
-        public Transform NodeTarget { get => _nodeTarget; }
+        public Transform NodeTransform { get => _nodeTransform; }
 
         protected void Awake()
         {
             _collider = GetComponent<SphereCollider>();
             _rigidbody = GetComponent<Rigidbody>();
             _renderer = GetComponent<Renderer>();
-            _camera = Camera.main;
-            _nodeTarget = GetComponent<Transform>();
+            _nodeTransform = GetComponent<Transform>();
         }
 
         public void Init(ENode id)

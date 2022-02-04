@@ -7,7 +7,7 @@ namespace AR_PROTO.Interface
     public interface INode
     {
         bool IsMoved { get; }
-        Transform NodeTarget { get; }
+        Transform NodeTransform { get; }
         void ChangeColor(bool isSelected);
     }
 }

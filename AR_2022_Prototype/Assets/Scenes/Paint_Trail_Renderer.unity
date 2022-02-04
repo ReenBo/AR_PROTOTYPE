@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4130fb0c9f62a149a4e9a60b4e7835a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycastManager: {fileID: 0}
+  _raycastManager: {fileID: 1560153605}
   _listPoints:
   - {fileID: 4588509526817537808, guid: 307db724ee69c0b4f9117be2376011f4, type: 3}
   - {fileID: 4588509526817537808, guid: 307db724ee69c0b4f9117be2376011f4, type: 3}
