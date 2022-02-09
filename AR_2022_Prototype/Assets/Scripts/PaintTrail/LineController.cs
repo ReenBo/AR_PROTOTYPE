@@ -25,9 +25,6 @@ namespace AR_PROTO
 
             _nodeStart = GetNodePositionByIndex(_nodePrefab, 0);
             _nodeEnd = GetNodePositionByIndex(_nodePrefab, 1);
-
-            _nodeStart.gameObject.AddComponent<Node>().Init(ENode.nodeS);
-            _nodeEnd.gameObject.AddComponent<Node>().Init(ENode.nodeE);
         }
 
         protected void Update()
@@ -38,36 +35,14 @@ namespace AR_PROTO
 
         private Transform GetNodePositionByIndex(GameObject gameObject, int index)
         {
-            var vector = new Vector3(index, 0f, 2f);
+            var vector = new Vector3(index - 0.5f, 0f, 2f);
 
             var node = Instantiate(gameObject, vector, Quaternion.identity);
+
+            node.gameObject.AddComponent<Node>().Init((ENode)index);
+            node.transform.SetParent(transform);
+
             return node.transform;
         }
-
-        //protected void FixedUpdate()
-        //{
-        //    if (_isMoved)
-        //    {
-        //        MoveObjects();
-        //    }
-        //}
-
-        //private void MoveObjects()
-        //{
-        //    if (Input.touchCount > 0)
-        //    {
-        //        var touch = Input.GetTouch(0);
-
-        //        if (touch.phase == TouchPhase.Moved)
-        //        {
-        //            Ray ray = _camera.ScreenPointToRay(touch.position);
-
-        //            if (Physics.Raycast(ray, out RaycastHit hit))
-        //            {
-        //                transform.position = hit.point;
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

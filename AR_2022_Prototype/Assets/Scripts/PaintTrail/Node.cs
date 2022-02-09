@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using AR_PROTO.Interface;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.EventSystems;
 
 namespace AR_PROTO
 {
-    public class Node : MonoBehaviour, INode
+    public class Node : MonoBehaviour, INode, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         private int _idNode;
 
@@ -62,14 +63,24 @@ namespace AR_PROTO
             _renderer.material.color = (Color)thisColor;
         }
 
-        //protected void OnMouseEnter()
-        //{
-        //    _renderer.material.color = Color.red; 
-        //}
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        //protected void OnMouseExit()
-        //{
-        //    _renderer.material.color = default;
-        //}
+        public void OnDrag(PointerEventData eventData)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
